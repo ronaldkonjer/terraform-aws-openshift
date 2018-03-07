@@ -47,7 +47,7 @@ sample:
 # not provided by default. Error on issues, suitable for CI.
 lint:
 	terraform get
-	TF_VAR_region="us-east-1" tflint --error-with-issues
+	TF_VAR_region="eu-west-1" tflint --error-with-issues
 
 # Run the tests.
 test:
