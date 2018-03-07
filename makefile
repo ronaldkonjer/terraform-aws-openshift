@@ -24,6 +24,8 @@ openshift:
 # Open the console.
 browse-openshift:
 	open $$(terraform output master-url)
+browse-splunk:
+	open $$(terraform output splunk-console-url)
 
 # SSH onto the master.
 ssh-bastion:
@@ -55,5 +57,10 @@ test:
 circleci:
 	circleci config validate -c .circleci/config.yml
 	circleci build --job lint
+
+# Setup splunk.
+splunk:
+	cat ./recipes/splunk/setup-cluster.sh | ssh -A ec2-user@$$(terraform output bastion-public_dns) ssh master.openshift.local
+	sed "s/\$${SPLUNK_FORWARD_SERVER}/$$(terraform output splunk-private_ip)/" ./recipes/splunk/splunk-forwarder.template.yml | ssh -A ec2-user@$$(terraform output bastion-public_dns) ssh master.openshift.local oc create -f -
 
 .PHONY: sample
