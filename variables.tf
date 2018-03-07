@@ -8,7 +8,7 @@ variable "region" {
 
 //  The public key to use for SSH access.
 variable "public_key_path" {
-  default = "~/.ssh/id_rsa.pub"
+  default = "~/.ssh/awscgkey.pub"
 }
 
 //  This map defines which AZ to put the 'Public Subnet' in, based on the

@@ -1,6 +1,7 @@
 //  Setup the core provider information.
 provider "aws" {
   region  = "${var.region}"
+  profile = "cg-iac"
 }
 
 //  Create the OpenShift cluster using our module.

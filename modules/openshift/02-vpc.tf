@@ -9,6 +9,29 @@ resource "aws_vpc" "openshift" {
   }
 }
 
+# resource "aws_vpc" "cg-aws" {
+#     cidr_block           = "172.24.0.0/16"
+#     enable_dns_hostnames = true
+#     enable_dns_support   = true
+#     instance_tenancy     = "default"
+
+#     tags {
+#         Name = "cg-aws"
+#         Project = "openshift"
+#     }
+# }
+resource "aws_vpc" "cg-aws" {
+    cidr_block           = "172.24.0.0/16"
+    enable_dns_hostnames = true
+    enable_dns_support   = true
+    instance_tenancy     = "default"
+
+    tags {
+        Name = "cg-aws"
+        Project = "openshift"
+    }
+}
+
 //  Create an Internet Gateway for the VPC.
 resource "aws_internet_gateway" "openshift" {
   vpc_id = "${aws_vpc.openshift.id}"
