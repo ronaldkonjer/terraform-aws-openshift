@@ -7,13 +7,21 @@ openshift:
 	# Add our identity for ssh, add the host key to avoid having to accept the
 	# the host key manually. Also add the identity of each node to the bastion.
 	ssh-add ~/.ssh/awscgkey
+
 	ssh-keyscan -t rsa -H $$(terraform output bastion-public_dns) >> ~/.ssh/known_hosts
 	ssh -A ec2-user@$$(terraform output bastion-public_dns) "ssh-keyscan -t rsa -H master.openshift.local >> ~/.ssh/known_hosts"
 	ssh -A ec2-user@$$(terraform output bastion-public_dns) "ssh-keyscan -t rsa -H node1.openshift.local >> ~/.ssh/known_hosts"
 	ssh -A ec2-user@$$(terraform output bastion-public_dns) "ssh-keyscan -t rsa -H node2.openshift.local >> ~/.ssh/known_hosts"
 
+	# add WPOL public key
+	# ssh-copy-id -f -i ~/.ssh/wpol.pub $$(terraform output bastion-public_dns)
+	# ssh-copy-id -f -i ~/.ssh/wpol.pub master.openshift.local
+	# ssh-copy-id -f -i ~/.ssh/wpol.pub node1.openshift.local
+	# ssh-copy-id -f -i ~/.ssh/wpol.pub node2.openshift.local
+
 	# Copy our inventory to the master and run the install script.
 	scp ./inventory.cfg ec2-user@$$(terraform output bastion-public_dns):~
+	scp ./cg-dnsmasq.cfg ec2-user@$$(terraform output bastion-public_dns):~
 	cat install-from-bastion.sh | ssh -o StrictHostKeyChecking=no -A ec2-user@$$(terraform output bastion-public_dns)
 
 	# Now the installer is done, run the postinstall steps on each host.

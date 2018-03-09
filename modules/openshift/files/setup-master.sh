@@ -34,7 +34,7 @@ EOF
 
 # Download and run the AWS logs agent.
 curl https://s3.amazonaws.com/aws-cloudwatch/downloads/latest/awslogs-agent-setup.py -O
-python ./awslogs-agent-setup.py --non-interactive --region us-east-1 -c ./awslogs.conf
+python ./awslogs-agent-setup.py --non-interactive --region eu-west-1 -c ./awslogs.conf
 
 # Start the awslogs service, also start on reboot.
 # Note: Errors go to /var/log/awslogs.log
@@ -47,6 +47,7 @@ chkconfig awslogs on
 # Install packages required to setup OpenShift.
 yum install -y wget git net-tools bind-utils iptables-services bridge-utils bash-completion httpd-tools
 yum update -y
+
 
 # Note: The step below is not in the official docs, I needed it to install
 # Docker. If anyone finds out why, I'd love to know.

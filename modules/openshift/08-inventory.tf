@@ -10,6 +10,8 @@ data "template_file" "inventory" {
     master_hostname = "${aws_instance.master.private_dns}"
     node1_hostname = "${aws_instance.node1.private_dns}"
     node2_hostname = "${aws_instance.node2.private_dns}"
+
+    dnsmasq_conf = "~/cg-dnsmasq.cfg"
   }
 }
 
@@ -18,3 +20,4 @@ resource "local_file" "inventory" {
   content     = "${data.template_file.inventory.rendered}"
   filename = "${path.cwd}/inventory.cfg"
 }
+

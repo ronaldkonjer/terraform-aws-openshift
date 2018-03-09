@@ -46,7 +46,7 @@ You'll be asked to specify a region:
 
 ![Specify Region](/content/images/2017/10/region.png)
 
-Any [AWS region](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#concepts-available-regions) will work fine, use `us-east-1` if you are not sure.
+Any [AWS region](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#concepts-available-regions) will work fine, use `eu-west-1` if you are not sure.
 
 It'll take about 5 minutes for Terraform to build the required infrastructure, which looks like this:
 
