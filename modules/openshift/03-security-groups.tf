@@ -3,7 +3,7 @@
 resource "aws_security_group" "openshift-vpc" {
   name        = "openshift-vpc"
   description = "Default security group that allows all instances in the VPC to talk to each other over any port and protocol."
-  vpc_id      = "${aws_vpc.cg-aws.id}"
+  vpc_id      = "${var.aws_vpc_cg-aws_id}"
 
   ingress {
     from_port = "0"
@@ -30,7 +30,7 @@ resource "aws_security_group" "openshift-vpc" {
 resource "aws_security_group" "openshift-public-ingress" {
   name        = "openshift-public-ingress"
   description = "Security group that allows public ingress to instances, HTTP, HTTPS and more."
-  vpc_id      = "${aws_vpc.cg-aws.id}"
+  vpc_id      = "${var.aws_vpc_cg-aws_id}"
 
   //  HTTP
   ingress {
@@ -64,6 +64,7 @@ resource "aws_security_group" "openshift-public-ingress" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  // ICMP
   ingress {
     from_port = 8
     to_port = 0
@@ -82,7 +83,7 @@ resource "aws_security_group" "openshift-public-ingress" {
 resource "aws_security_group" "openshift-public-egress" {
   name        = "openshift-public-egress"
   description = "Security group that allows egress to the internet for instances over HTTP and HTTPS."
-  vpc_id      = "${aws_vpc.cg-aws.id}"
+  vpc_id      = "${var.aws_vpc_cg-aws_id}"
 
   //  HTTP
   egress {
@@ -100,11 +101,27 @@ resource "aws_security_group" "openshift-public-egress" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  // ICMP
   egress {
     from_port = 8
     to_port = 0
     protocol = "icmp"
     cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  // All traffic to cgnet 
+  egress {
+    from_port = "0"
+    to_port   = "0"
+    protocol  = "-1"
+    cidr_blocks = ["172.19.0.0/16"]
+  }
+
+  egress {
+    from_port = "0"
+    to_port   = "0"
+    protocol  = "-1"
+    cidr_blocks = ["172.20.0.0/16"]
   }
 
   tags {
@@ -117,7 +134,7 @@ resource "aws_security_group" "openshift-public-egress" {
 resource "aws_security_group" "openshift-ssh" {
   name        = "openshift-ssh"
   description = "Security group that allows public ingress over SSH."
-  vpc_id      = "${aws_vpc.cg-aws.id}"
+  vpc_id      = "${var.aws_vpc_cg-aws_id}"
 
   //  SSH
   ingress {

@@ -73,7 +73,7 @@ eval `ssh-agent -s`
 make infrastructure
 ```
 
-You will be asked for a region to deploy in, use `us-east-1` or your preferred region. You can configure the nuances of how the cluster is created in the [`main.tf`](./main.tf) file. Once created, you will see a message like:
+You will be asked for a region to deploy in, use `eu-west-1` or your preferred region. You can configure the nuances of how the cluster is created in the [`main.tf`](./main.tf) file. Once created, you will see a message like:
 
 ```
 $ make infrastructure

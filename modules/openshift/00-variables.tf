@@ -1,5 +1,5 @@
 variable "region" {
-  description = "The region to deploy the cluster in, e.g: us-east-1."
+  description = "The region to deploy the cluster in, e.g: eu-west-1."
 }
 
 variable "amisize" {
@@ -11,7 +11,7 @@ variable "vpc_cidr" {
 }
 
 variable "subnetaz" {
-  description = "The AZ for the public subnet, e.g: us-east-1a"
+  description = "The AZ for the public subnet, e.g: eu-west-1a"
   type = "map"
 }
 
@@ -25,4 +25,18 @@ variable "key_name" {
 
 variable "public_key_path" {
   description = "The local public key path, e.g. ~/.ssh/id_rsa.pub"
+}
+
+variable "aws_vpc_cg-aws_id" {
+  default = "vpc-4fac482b"
+  description = "The vpc id of the already existing VPC that is not in Terraform state"
+}
+
+variable "aws_route_table_public_id" {
+  default = "rtb-0b30646f"
+  description = "The route table id of the already existing route that is connected to the VPN"
+}
+
+variable "platform_name" {
+  default = "Openshift"
 }

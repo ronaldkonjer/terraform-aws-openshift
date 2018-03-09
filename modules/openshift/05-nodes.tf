@@ -20,6 +20,7 @@ resource "aws_instance" "master" {
   subnet_id            = "${aws_subnet.public-subnet.id}"
   iam_instance_profile = "${aws_iam_instance_profile.openshift-instance-profile.id}"
   user_data            = "${data.template_file.setup-master.rendered}"
+  private_ip           = "172.24.28.83"
 
   security_groups = [
     "${aws_security_group.openshift-vpc.id}",
@@ -48,6 +49,8 @@ resource "aws_instance" "master" {
     Project = "openshift"
     // this tag is required for dynamic EBS PVCs
     // see https://github.com/kubernetes/kubernetes/issues/39178
+    #"kubernetes.io/cluster/openshift-${var.region}" = "shared"
+    #kubernetes.io/cluster/"${self.resource.name}" = "openshift-${var.region}"
     KubernetesCluster = "openshift-${var.region}"
   }
 }
@@ -68,6 +71,7 @@ resource "aws_instance" "node1" {
   subnet_id            = "${aws_subnet.public-subnet.id}"
   iam_instance_profile = "${aws_iam_instance_profile.openshift-instance-profile.id}"
   user_data            = "${data.template_file.setup-node.rendered}"
+  private_ip           = "172.24.28.250"
 
   security_groups = [
     "${aws_security_group.openshift-vpc.id}",
@@ -94,6 +98,7 @@ resource "aws_instance" "node1" {
   tags {
     Name    = "OpenShift Node 1"
     Project = "openshift"
+    #"kubernetes.io/cluster/openshift-${var.region}" = "shared"
     KubernetesCluster = "openshift-${var.region}"
   }
 }
@@ -103,6 +108,7 @@ resource "aws_instance" "node2" {
   subnet_id            = "${aws_subnet.public-subnet.id}"
   iam_instance_profile = "${aws_iam_instance_profile.openshift-instance-profile.id}"
   user_data            = "${data.template_file.setup-node.rendered}"
+  private_ip           = "172.24.28.201"
 
   security_groups = [
     "${aws_security_group.openshift-vpc.id}",
@@ -129,6 +135,7 @@ resource "aws_instance" "node2" {
   tags {
     Name    = "OpenShift Node 2"
     Project = "openshift"
+    #"kubernetes.io/cluster/openshift-eu-west-1" = "shared"
     KubernetesCluster = "openshift-${var.region}"
   }
 }
