@@ -42,6 +42,18 @@ resource "aws_instance" "master" {
     volume_type = "gp2"
   }
 
+  ebs_block_device {
+    device_name = "/dev/xvdbk"
+    volume_size = 1
+    volume_type = "gp2"
+  }
+
+  ebs_block_device {
+    device_name = "/dev/xvdbm"
+    volume_size = 1
+    volume_type = "gp2"
+  }
+
   key_name = "${aws_key_pair.keypair.key_name}"
 
   ### Need the file on the bastion server
