@@ -29,10 +29,11 @@ resource "aws_subnet" "public-subnet" {
   map_public_ip_on_launch = true
   # depends_on              = ["aws_internet_gateway.openshift"]
 
-  tags {
-    Name    = "OpenShift Public Subnet"
-    Project = "openshift"
-  }
+  tags = "${map(
+    "kubernetes.io/cluster/${var.platform_name}", "owned",
+    "Name", "OpenShift Public Subnet",
+    "Project", "openshift"
+  )}"
 }
 
 //  Create a route table allowing all addresses access to the IGW.

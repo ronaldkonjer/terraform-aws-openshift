@@ -19,10 +19,11 @@ resource "aws_security_group" "openshift-vpc" {
     self      = true
   }
 
-  tags {
-    Name    = "OpenShift Internal VPC"
-    Project = "openshift"
-  }
+  tags = "${map(
+    "kubernetes.io/cluster/${var.platform_name}", "owned",
+    "Name", "OpenShift Internal VPC",
+    "Project", "openshift"
+  )}"
 }
 
 //  This security group allows public ingress to the instances for HTTP, HTTPS
@@ -72,10 +73,11 @@ resource "aws_security_group" "openshift-public-ingress" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags {
-    Name    = "OpenShift Public Access"
-    Project = "openshift"
-  }
+  tags = "${map(
+    "kubernetes.io/cluster/${var.platform_name}", "owned",
+    "Name", "OpenShift Public Access",
+    "Project", "openshift"
+  )}"
 }
 
 //  This security group allows public egress from the instances for HTTP and
@@ -124,10 +126,11 @@ resource "aws_security_group" "openshift-public-egress" {
     cidr_blocks = ["172.20.0.0/16"]
   }
 
-  tags {
-    Name    = "OpenShift Public Access"
-    Project = "openshift"
-  }
+  tags = "${map(
+    "kubernetes.io/cluster/${var.platform_name}", "owned",
+    "Name", "OpenShift Public Access",
+    "Project", "openshift"
+  )}"
 }
 
 //  Security group which allows SSH access to a host. Used for the bastion.
@@ -144,8 +147,9 @@ resource "aws_security_group" "openshift-ssh" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags {
-    Name    = "OpenShift SSH Access"
-    Project = "openshift"
-  }
+  tags = "${map(
+    "kubernetes.io/cluster/${var.platform_name}", "owned",
+    "Name", "OpenShift SSH Access",
+    "Project", "openshift"
+  )}"
 }

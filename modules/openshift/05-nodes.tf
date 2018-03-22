@@ -14,7 +14,7 @@ data "template_file" "setup-master" {
 
 //  Launch configuration for the consul cluster auto-scaling group.
 resource "aws_instance" "master" {
-  ami                  = "${data.aws_ami.rhel7_2.id}"
+  ami                  = "${data.aws_ami.node.id}"
   # Master nodes require at least 16GB of memory.
   instance_type        = "m4.xlarge"
   subnet_id            = "${aws_subnet.public-subnet.id}"
@@ -44,15 +44,40 @@ resource "aws_instance" "master" {
 
   key_name = "${aws_key_pair.keypair.key_name}"
 
-  tags {
-    Name    = "OpenShift Master"
-    Project = "openshift"
-    // this tag is required for dynamic EBS PVCs
-    // see https://github.com/kubernetes/kubernetes/issues/39178
-    #"kubernetes.io/cluster/openshift-${var.region}" = "shared"
-    #kubernetes.io/cluster/"${self.resource.name}" = "openshift-${var.region}"
-    KubernetesCluster = "openshift-${var.region}"
-  }
+  ### Need the file on the bastion server
+  # setup connection using the jumphost
+  # connection {
+  #   agent = false
+  #   bastion_host = "${aws_instance.bastion.private_ip}"
+  #   bastion_user = "${var.aws_instance_user}"
+  #   bastion_port = 22
+  #   bastion_private_key = "${file("${var.private_key_path}")}"
+  #   user = "${var.aws_instance_user}"
+  #   private_key = "${file("${var.private_key_path}")}"
+  #   host = "${self.private_ip}"
+  #   timeout = "2m"
+  # }
+
+  # # create local for it => https://www.terraform.io/docs/configuration/locals.html
+  # # create file on the server
+  # provisioner "file" {
+  #   source      = "./modules/openshift/files/cg-dnsmasq.cfg"
+  #   destination = "/cg-dnsmasq.cfg"
+  # }
+
+  # # move file to etc/dnsmasq.d/
+  # provisioner "remote-exec" {
+  #   inline = [
+  #     "sudo mv /cg-dnsmasq.cfg /etc/dnsmasq.d/",
+  #     "chmod 755 /etc/dnsmasq.d/cg-dnsmasq.cfg"
+  #   ]
+  # }
+
+  tags = "${map(
+    "kubernetes.io/cluster/${var.platform_name}", "owned",
+    "Name", "OpenShift Master",
+    "Project", "openshift"
+  )}"
 }
 
 //  Create the node userdata script.
@@ -66,7 +91,7 @@ data "template_file" "setup-node" {
 //  Create the two nodes. This would be better as a Launch Configuration and
 //  autoscaling group, but I'm keeping it simple...
 resource "aws_instance" "node1" {
-  ami                  = "${data.aws_ami.rhel7_2.id}"
+  ami                  = "${data.aws_ami.node.id}"
   instance_type        = "${var.amisize}"
   subnet_id            = "${aws_subnet.public-subnet.id}"
   iam_instance_profile = "${aws_iam_instance_profile.openshift-instance-profile.id}"
@@ -95,15 +120,15 @@ resource "aws_instance" "node1" {
 
   key_name = "${aws_key_pair.keypair.key_name}"
 
-  tags {
-    Name    = "OpenShift Node 1"
-    Project = "openshift"
-    #"kubernetes.io/cluster/openshift-${var.region}" = "shared"
-    KubernetesCluster = "openshift-${var.region}"
-  }
+ 
+  tags = "${map(
+    "kubernetes.io/cluster/${var.platform_name}", "owned",
+    "Name", "OpenShift Node 1",
+    "Project", "openshift"
+  )}"
 }
 resource "aws_instance" "node2" {
-  ami                  = "${data.aws_ami.rhel7_2.id}"
+  ami                  = "${data.aws_ami.node.id}"
   instance_type        = "${var.amisize}"
   subnet_id            = "${aws_subnet.public-subnet.id}"
   iam_instance_profile = "${aws_iam_instance_profile.openshift-instance-profile.id}"
@@ -132,10 +157,9 @@ resource "aws_instance" "node2" {
 
   key_name = "${aws_key_pair.keypair.key_name}"
 
-  tags {
-    Name    = "OpenShift Node 2"
-    Project = "openshift"
-    #"kubernetes.io/cluster/openshift-eu-west-1" = "shared"
-    KubernetesCluster = "openshift-${var.region}"
-  }
+  tags = "${map(
+    "kubernetes.io/cluster/${var.platform_name}", "owned",
+    "Name", "OpenShift Node 2",
+    "Project", "openshift"
+  )}"
 }
