@@ -22,7 +22,7 @@ resource "aws_instance" "master" {
   user_data            = "${data.template_file.setup-master.rendered}"
   private_ip           = "172.24.28.83"
 
-  security_groups = [
+  vpc_security_group_ids = [
     "${aws_security_group.openshift-vpc.id}",
     "${aws_security_group.openshift-public-ingress.id}",
     "${aws_security_group.openshift-public-egress.id}",
@@ -98,7 +98,7 @@ resource "aws_instance" "node1" {
   user_data            = "${data.template_file.setup-node.rendered}"
   private_ip           = "172.24.28.250"
 
-  security_groups = [
+  vpc_security_group_ids = [
     "${aws_security_group.openshift-vpc.id}",
     "${aws_security_group.openshift-public-ingress.id}",
     "${aws_security_group.openshift-public-egress.id}",
@@ -135,7 +135,7 @@ resource "aws_instance" "node2" {
   user_data            = "${data.template_file.setup-node.rendered}"
   private_ip           = "172.24.28.201"
 
-  security_groups = [
+  vpc_security_group_ids = [
     "${aws_security_group.openshift-vpc.id}",
     "${aws_security_group.openshift-public-ingress.id}",
     "${aws_security_group.openshift-public-egress.id}",
