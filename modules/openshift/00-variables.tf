@@ -40,3 +40,11 @@ variable "aws_route_table_public_id" {
 variable "platform_name" {
   default = "Openshift"
 }
+
+variable "aws_instance_user" {
+  default = "ec2-user"
+}
+
+variable "private_key_path" {
+  default = "~/.ssh/awscgkey"
+}

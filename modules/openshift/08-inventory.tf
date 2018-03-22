@@ -8,10 +8,11 @@ data "template_file" "inventory" {
     public_hostname = "${aws_instance.master.public_ip}.xip.io"
     master_inventory = "${aws_instance.master.private_dns}"
     master_hostname = "${aws_instance.master.private_dns}"
+    cluster_id = "${var.platform_name}"
     node1_hostname = "${aws_instance.node1.private_dns}"
     node2_hostname = "${aws_instance.node2.private_dns}"
 
-    dnsmasq_conf = "~/cg-dnsmasq.cfg"
+    dnsmasq_conf = "/home/ec2-user/cg-dnsmasq.cfg"
   }
 }
 
