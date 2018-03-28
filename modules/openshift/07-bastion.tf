@@ -1,7 +1,7 @@
 //  Launch configuration for the consul cluster auto-scaling group.
 resource "aws_instance" "bastion" {
   ami                  = "${data.aws_ami.bastion.id}"
-  instance_type        = "t2.medium"
+  instance_type        = "t2.micro"
   iam_instance_profile = "${aws_iam_instance_profile.bastion-instance-profile.id}"
   subnet_id            = "${aws_subnet.public-subnet.id}"
 

@@ -32,6 +32,7 @@ resource "aws_instance" "master" {
   root_block_device {
     volume_size = 50
     volume_type = "gp2"
+    delete_on_termination = true
   }
 
   # Storage for Docker, see:
@@ -40,18 +41,56 @@ resource "aws_instance" "master" {
     device_name = "/dev/sdf"
     volume_size = 80
     volume_type = "gp2"
+    delete_on_termination = true
   }
 
   ebs_block_device {
     device_name = "/dev/xvdbk"
     volume_size = 1
     volume_type = "gp2"
+    delete_on_termination = true
   }
 
   ebs_block_device {
     device_name = "/dev/xvdbm"
     volume_size = 1
     volume_type = "gp2"
+    delete_on_termination = true
+  }
+
+  ebs_block_device {
+    device_name = "/dev/xvdcd"
+    volume_size = 10
+    volume_type = "gp2"
+    delete_on_termination = true
+  }
+
+  ebs_block_device {
+    device_name = "/dev/xvdce"
+    volume_size = 10
+    volume_type = "gp2"
+    delete_on_termination = true
+  }
+
+  ebs_block_device {
+    device_name = "/dev/xvdbj"
+    volume_size = 10
+    volume_type = "gp2"
+    delete_on_termination = true
+  }
+
+  ebs_block_device {
+    device_name = "/dev/xvdbn"
+    volume_size = 10
+    volume_type = "gp2"
+    delete_on_termination = true
+  }
+
+  ebs_block_device {
+    device_name = "/dev/xvdcu"
+    volume_size = 10
+    volume_type = "gp2"
+    delete_on_termination = true
   }
 
   key_name = "${aws_key_pair.keypair.key_name}"
@@ -120,6 +159,7 @@ resource "aws_instance" "node1" {
   root_block_device {
     volume_size = 50
     volume_type = "gp2"
+    delete_on_termination = true
   }
 
   # Storage for Docker, see:
@@ -128,13 +168,31 @@ resource "aws_instance" "node1" {
     device_name = "/dev/sdf"
     volume_size = 80
     volume_type = "gp2"
+    delete_on_termination = true
   }
 
   ebs_block_device {
     device_name = "/dev/xvdbe"
     volume_size = 1
     volume_type = "gp2"
+    delete_on_termination = true
   }
+
+  ebs_block_device {
+    device_name = "/dev/xvdbf"
+    volume_size = 10
+    volume_type = "gp2"
+    delete_on_termination = true
+  }
+
+  ebs_block_device {
+    device_name = "/dev/xvdbc"
+    volume_size = 10
+    volume_type = "gp2"
+    delete_on_termination = true
+  }
+
+
 
   key_name = "${aws_key_pair.keypair.key_name}"
 
@@ -163,6 +221,7 @@ resource "aws_instance" "node2" {
   root_block_device {
     volume_size = 50
     volume_type = "gp2"
+    delete_on_termination = true
   }
 
   # Storage for Docker, see:
@@ -171,18 +230,28 @@ resource "aws_instance" "node2" {
     device_name = "/dev/sdf"
     volume_size = 80
     volume_type = "gp2"
+    delete_on_termination = true
   }
 
   ebs_block_device {
     device_name = "/dev/xvdbv"
     volume_size = 1
     volume_type = "gp2"
+    delete_on_termination = true
   }
 
    ebs_block_device {
     device_name = "/dev/xvdcg"
     volume_size = 1
     volume_type = "gp2"
+    delete_on_termination = true
+  }
+
+  ebs_block_device {
+    device_name = "/dev/xvdba"
+    volume_size = 10
+    volume_type = "gp2"
+    delete_on_termination = true
   }
 
   key_name = "${aws_key_pair.keypair.key_name}"

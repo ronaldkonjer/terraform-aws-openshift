@@ -33,7 +33,9 @@ fi
 #ANSIBLE_HOST_KEY_CHECKING=False /usr/local/bin/ansible-playbook -i ./inventory.cfg ./openshift-ansible/playbooks/adhoc/uninstall.yml -vvv # uncomment for verbose! -vvv
 
 
-ANSIBLE_HOST_KEY_CHECKING=False /usr/local/bin/ansible-playbook -i ./inventory.cfg -f 2 ./openshift-ansible/playbooks/prerequisites.yml -vvv # uncomment for verbose! -vvv
+#ANSIBLE_HOST_KEY_CHECKING=False /usr/local/bin/ansible-playbook -i ./inventory.cfg ./openshift-ansible/playbooks/prerequisites.yml -vvv # uncomment for verbose! -vvv
 ANSIBLE_HOST_KEY_CHECKING=False /usr/local/bin/ansible-playbook -i ./inventory.cfg ./openshift-ansible/playbooks/deploy_cluster.yml -vvv # uncomment for verbose! -vvv
+
+#ANSIBLE_HOST_KEY_CHECKING=False /usr/local/bin/ansible-playbook -i ./inventory.cfg ./openshift-ansible/playbooks/openshift-prometheus/config.yml -vvv
 # If needed, uninstall with the below:
 # ansible-playbook playbooks/adhoc/uninstall.yml
